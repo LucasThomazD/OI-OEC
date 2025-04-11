@@ -104,7 +104,17 @@ namespace windowsFormOI
             BoxArea.Items.Add("8000");
             BoxArea.SelectedIndex = 0;
 
-            
+            BoxModelo.Items.Add("PADRÃO");
+            BoxModelo.Items.Add("REDES");
+            BoxModelo.Items.Add("COMPLEMENTO");
+            BoxModelo.Items.Add("ENTREGAS");
+            BoxModelo.Items.Add("PPQ");
+            BoxModelo.Items.Add("Fis. Financeiro");
+            BoxModelo.Items.Add("Crit. Med");
+            BoxModelo.Items.Add("Resumo Fis.");
+            BoxModelo.SelectedIndex = 0;
+
+
 
 
         }
@@ -196,6 +206,30 @@ namespace windowsFormOI
 
             }
             catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao alterar valores no Excel: " + ex.Message);
+            }
+        }
+        private void ComboBoxEscolha(System.Windows.Forms.ComboBox BoxModelo, System.Windows.Forms.TextBox textInicio, System.Windows.Forms.TextBox textFim)
+        {
+
+            
+            try
+            {
+                AtualizarStatus($"Atualizando Informações", 75);
+                var worksheet = (Excel.Worksheet)workbook.Sheets[1];
+                if (textFim.Text != null || textInicio.Text != null)
+                    {
+                    worksheet.Cells[2, 2] = textInicio.Text.ToString(); // Célula B2
+                    worksheet.Cells[2, 3] = textFim.Text.ToString(); // Célula C2
+                }
+                worksheet.Cells[1, 1] = BoxTA1.SelectedItem.ToString(); // Célula A2
+                AtualizarStatus($"Quase Pronto", 100);
+                System.Threading.Thread.Sleep(2000);
+                AtualizarStatus($"Consolidado Concluido", 0);
+            }
+
+            catch(Exception ex) 
             {
                 MessageBox.Show("Erro ao alterar valores no Excel: " + ex.Message);
             }
@@ -462,6 +496,8 @@ namespace windowsFormOI
         {
 
         }
+
+        
     }
     
     

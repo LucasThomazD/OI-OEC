@@ -35,9 +35,17 @@ namespace windowsFormOI
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.label12 = new System.Windows.Forms.Label();
+            this.textFim = new System.Windows.Forms.TextBox();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
+            this.textInicio = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.BoxModelo = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.panel4 = new System.Windows.Forms.Panel();
             this.bDerrubar = new System.Windows.Forms.Button();
             this.bAplicarInfo = new System.Windows.Forms.Button();
@@ -69,10 +77,11 @@ namespace windowsFormOI
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.button1 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.panel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.panel4.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -106,9 +115,7 @@ namespace windowsFormOI
             // 
             this.tabPage2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tabPage2.BackgroundImage")));
             this.tabPage2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.tabPage2.Controls.Add(this.pictureBox4);
-            this.tabPage2.Controls.Add(this.label6);
-            this.tabPage2.Controls.Add(this.pictureBox3);
+            this.tabPage2.Controls.Add(this.panel5);
             this.tabPage2.Controls.Add(this.panel4);
             this.tabPage2.Controls.Add(this.panel3);
             this.tabPage2.Controls.Add(this.bUnico);
@@ -123,11 +130,48 @@ namespace windowsFormOI
             this.tabPage2.Text = "Comparativo";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // panel5
+            // 
+            this.panel5.BackColor = System.Drawing.Color.IndianRed;
+            this.panel5.Controls.Add(this.button1);
+            this.panel5.Controls.Add(this.label12);
+            this.panel5.Controls.Add(this.textFim);
+            this.panel5.Controls.Add(this.pictureBox4);
+            this.panel5.Controls.Add(this.textInicio);
+            this.panel5.Controls.Add(this.label11);
+            this.panel5.Controls.Add(this.label10);
+            this.panel5.Controls.Add(this.label9);
+            this.panel5.Controls.Add(this.label8);
+            this.panel5.Controls.Add(this.BoxModelo);
+            this.panel5.Controls.Add(this.label6);
+            this.panel5.Location = new System.Drawing.Point(552, 256);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(512, 192);
+            this.panel5.TabIndex = 10;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Arial Narrow", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label12.Location = new System.Drawing.Point(264, 152);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(178, 20);
+            this.label12.TabIndex = 14;
+            this.label12.Text = "Abrir Diretório De Arquivos";
+            // 
+            // textFim
+            // 
+            this.textFim.Location = new System.Drawing.Point(208, 154);
+            this.textFim.Name = "textFim";
+            this.textFim.Size = new System.Drawing.Size(40, 20);
+            this.textFim.TabIndex = 13;
+            // 
             // pictureBox4
             // 
             this.pictureBox4.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox4.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox4.Image")));
-            this.pictureBox4.Location = new System.Drawing.Point(1024, 16);
+            this.pictureBox4.Location = new System.Drawing.Point(448, 144);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(40, 32);
             this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -135,25 +179,75 @@ namespace windowsFormOI
             this.pictureBox4.TabStop = false;
             this.pictureBox4.Click += new System.EventHandler(this.pictureBox4_Click);
             // 
+            // textInicio
+            // 
+            this.textInicio.Location = new System.Drawing.Point(88, 154);
+            this.textInicio.Name = "textInicio";
+            this.textInicio.Size = new System.Drawing.Size(40, 20);
+            this.textInicio.TabIndex = 12;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Arial Narrow", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label11.Location = new System.Drawing.Point(160, 152);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(38, 23);
+            this.label11.TabIndex = 11;
+            this.label11.Text = "Fim";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Arial Narrow", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label10.Location = new System.Drawing.Point(24, 152);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(51, 23);
+            this.label10.TabIndex = 10;
+            this.label10.Text = "Início";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Arial Narrow", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label9.Location = new System.Drawing.Point(24, 112);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(234, 23);
+            this.label9.TabIndex = 9;
+            this.label9.Text = "LINHAS DE INICIO E FIM (OPN)";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Arial Narrow", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label8.Location = new System.Drawing.Point(24, 64);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(67, 23);
+            this.label8.TabIndex = 8;
+            this.label8.Text = "Modelo";
+            // 
+            // BoxModelo
+            // 
+            this.BoxModelo.FormattingEnabled = true;
+            this.BoxModelo.Location = new System.Drawing.Point(96, 66);
+            this.BoxModelo.Name = "BoxModelo";
+            this.BoxModelo.Size = new System.Drawing.Size(152, 21);
+            this.BoxModelo.TabIndex = 3;
+            // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(784, 336);
+            this.label6.Font = new System.Drawing.Font("Arial Narrow", 18F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label6.Location = new System.Drawing.Point(144, 8);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(198, 25);
-            this.label6.TabIndex = 8;
-            this.label6.Text = "EM CONSTRUÇÃO";
-            // 
-            // pictureBox3
-            // 
-            this.pictureBox3.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox3.Image")));
-            this.pictureBox3.Location = new System.Drawing.Point(632, 304);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(128, 80);
-            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox3.TabIndex = 7;
-            this.pictureBox3.TabStop = false;
+            this.label6.Size = new System.Drawing.Size(259, 29);
+            this.label6.TabIndex = 2;
+            this.label6.Text = "CONSOLIDAR PLANILHAS";
             // 
             // panel4
             // 
@@ -471,6 +565,16 @@ namespace windowsFormOI
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(39, 17);
             this.toolStripStatusLabel1.Text = "Status";
             // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(312, 64);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(112, 32);
+            this.button1.TabIndex = 15;
+            this.button1.Text = "BUSCAR PASTA";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -488,9 +592,9 @@ namespace windowsFormOI
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
+            this.panel5.ResumeLayout(false);
+            this.panel5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             this.panel1.ResumeLayout(false);
@@ -534,8 +638,6 @@ namespace windowsFormOI
         private System.Windows.Forms.ComboBox BoxTA1;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.PictureBox pictureBox3;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button bAplicarInfo;
         private System.Windows.Forms.Button bDerrubar;
@@ -543,6 +645,17 @@ namespace windowsFormOI
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox BoxModelo;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox textFim;
+        private System.Windows.Forms.TextBox textInicio;
+        private System.Windows.Forms.Button button1;
     }
 }
 
