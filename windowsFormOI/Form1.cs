@@ -310,7 +310,19 @@ namespace windowsFormOI
 
         private void bUnico_Click(object sender, EventArgs e)
         {
-           
+            try
+            {
+                AtualizarStatus($"Buscando Arquivo de Comparação", 30);
+                //tenta iniciar macro
+                excelApp.Run("gerarUnico");
+                AtualizarStatus($"Quase Lá", 91);
+                System.Threading.Thread.Sleep(2000);
+                AtualizarStatus($"Arquivos Prontos Para Serem Filtrados", 0);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao iniciar macro: " + ex.Message);
+            }
         }
 
 
