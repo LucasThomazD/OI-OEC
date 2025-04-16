@@ -12,6 +12,7 @@ using System.Drawing.Drawing2D;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.IO;
 using System.Drawing.Imaging;
+using Microsoft.Office.Interop.Excel;
 
 namespace windowsFormOI
 {   
@@ -104,6 +105,7 @@ namespace windowsFormOI
             BoxArea.Items.Add("8000");
             BoxArea.SelectedIndex = 0;
 
+            BoxModelo.Items.Add("Selecione");
             BoxModelo.Items.Add("PADRÃO");
             BoxModelo.Items.Add("REDES");
             BoxModelo.Items.Add("COMPLEMENTO");
@@ -168,70 +170,65 @@ namespace windowsFormOI
             catch (Exception ex)
             {
                 MessageBox.Show("Erro ao executar macro: " + ex.Message);
+                AtualizarStatus($"Error", 0);
             }
         }
 
-        private void ComboBoxTArea(System.Windows.Forms.ComboBox BoxTA1, System.Windows.Forms.ComboBox BoxTA2, System.Windows.Forms.ComboBox BoxArea)
+        private void ComboBoxTArea(System.Windows.Forms.ComboBox BoxTA1, System.Windows.Forms.ComboBox BoxTA2, System.Windows.Forms.ComboBox BoxArea, System.Windows.Forms.ComboBox BoxModelo, System.Windows.Forms.TextBox textInicio, System.Windows.Forms.TextBox textFim)
         {
             try
             {
-                if (BoxTA1.SelectedIndex <= 0 || BoxTA2.SelectedIndex <= 0 || BoxArea.SelectedIndex <= 0)
+                var worksheet = (Excel.Worksheet)workbook.Sheets[1]; // Seleciona a primeira planilha
+                if (BoxTA1.SelectedIndex > 0 || BoxTA2.SelectedIndex > 0 || BoxArea.SelectedIndex > 0 || BoxArea.SelectedIndex > 0 || textFim.Text != null || textInicio.Text != null)
                 {
+                    AtualizarStatus($"Atualizando Informações", 75);
+                    
+
+                    // Define os valores em células específicas
+                    worksheet.Cells[1, 1] = BoxTA1.SelectedItem.ToString(); // Célula A1
+                    worksheet.Cells[1, 2] = BoxTA2.SelectedItem.ToString(); // Célula B1
+                    worksheet.Cells[1, 3] = BoxArea.SelectedItem.ToString(); // Célula C1
+                    worksheet.Cells[2, 2] = textInicio.Text.ToString(); // Célula B2
+                    worksheet.Cells[2, 3] = textFim.Text.ToString(); // Célula C2
+                    worksheet.Cells[2, 1] = BoxModelo.SelectedItem.ToString(); // Célula A2
+                    AtualizarStatus($"Informações Atualizadas", 100);
+                    System.Threading.Thread.Sleep(2000);
+                    AtualizarStatus($"Pronto Para Buscar Arquivos Comparativos", 0);
                     MessageBox.Show("Por favor, selecione opções válidas em ambos os campos.");
                     return;
                 }
-
-                // Inicializa o Excel
-                //var excelApp = new Excel.Application();
+   
                 //string caminhoArquivo = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "src", "macros.xlsm");
-
-                // Abre o arquivo Excel
-                //workbook = excelApp.Workbooks.Open(caminhoArquivo);
-                AtualizarStatus($"Atualizando Informações", 75);
-                var worksheet = (Excel.Worksheet)workbook.Sheets[1]; // Seleciona a primeira planilha
-
-                // Define os valores em células específicas
-                worksheet.Cells[1, 1] = BoxTA1.SelectedItem.ToString(); // Célula A1
-                worksheet.Cells[1, 2] = BoxTA2.SelectedItem.ToString(); // Célula B1
-                worksheet.Cells[1, 3] = BoxArea.SelectedItem.ToString(); // Célula C1
-                AtualizarStatus($"Informações Atualizadas", 100);
-                System.Threading.Thread.Sleep(2000);
-                AtualizarStatus($"Pronto Para Buscar Arquivos Comparativos", 0);
-                // Salva e fecha o arquivo Excel
-                //workbook.Save();
-
-
-
-
 
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Erro ao alterar valores no Excel: " + ex.Message);
+                AtualizarStatus($"Error", 0);
             }
         }
-        private void ComboBoxEscolha(System.Windows.Forms.ComboBox BoxModelo, System.Windows.Forms.TextBox textInicio, System.Windows.Forms.TextBox textFim)
+        private void ComboBoxEscolha(System.Windows.Forms.ComboBox BoxModelo, System.Windows.Forms.TextBox textInicio, System.Windows.Forms.TextBox textFim, System.Windows.Forms.ComboBox BoxTA1)
         {
 
             
             try
             {
-                AtualizarStatus($"Atualizando Informações", 75);
                 var worksheet = (Excel.Worksheet)workbook.Sheets[1];
                 if (textFim.Text != null || textInicio.Text != null)
                     {
                     worksheet.Cells[2, 2] = textInicio.Text.ToString(); // Célula B2
                     worksheet.Cells[2, 3] = textFim.Text.ToString(); // Célula C2
                 }
-                worksheet.Cells[1, 1] = BoxTA1.SelectedItem.ToString(); // Célula A2
-                AtualizarStatus($"Quase Pronto", 100);
+                worksheet.Cells[2, 1] = BoxModelo.SelectedItem.ToString(); // Célula A2
+                worksheet.Cells[1, 1] = BoxTA1.SelectedItem.ToString(); // Célula A1
                 System.Threading.Thread.Sleep(2000);
-                AtualizarStatus($"Consolidado Concluido", 0);
+                
             }
 
             catch(Exception ex) 
             {
                 MessageBox.Show("Erro ao alterar valores no Excel: " + ex.Message);
+                AtualizarStatus($"Error", 0);
             }
         }
         private void AbrirMacros()
@@ -250,7 +247,7 @@ namespace windowsFormOI
                     AtualizarStatus($"Arquivo Pronto", 50);
 
                     // Torna o Excel visível (opcional)
-                    excelApp.Visible = true;
+                    excelApp.Visible = false;
                 }
 
                 
@@ -260,6 +257,7 @@ namespace windowsFormOI
             catch (Exception ex)
             {
                 MessageBox.Show("Erro ao Abrir Arquivo Macro: " + ex.Message);
+                AtualizarStatus($"Error", 0);
             }
         }
         private void FecharExcel()
@@ -294,6 +292,7 @@ namespace windowsFormOI
             catch (Exception ex)
             {
                 MessageBox.Show("Erro ao fechar o Excel: " + ex.Message);
+                AtualizarStatus($"Error", 0);
             }
         }
         private void AbrirGerenciadorArquivos(string caminho)
@@ -313,6 +312,7 @@ namespace windowsFormOI
             catch (Exception ex)
             {
                 MessageBox.Show("Erro ao abrir o Gerenciador de Arquivos: " + ex.Message);
+                AtualizarStatus($"Error", 0);
             }
         }
         private void bArquivo_Click(object sender, EventArgs e)
@@ -330,6 +330,7 @@ namespace windowsFormOI
             catch (Exception ex)
             {
                 MessageBox.Show("Erro ao iniciar macro: " + ex.Message);
+                AtualizarStatus($"Error", 0);
             }
         }
 
@@ -338,7 +339,7 @@ namespace windowsFormOI
         private void bAplicarInfo_Click(object sender, EventArgs e)
         {
             AbrirMacros();
-            ComboBoxTArea(BoxTA1, BoxTA2, BoxArea);
+            ComboBoxTArea(BoxTA1, BoxTA2, BoxArea, BoxModelo, textInicio, textFim);
 
         }
 
@@ -356,6 +357,7 @@ namespace windowsFormOI
             catch (Exception ex)
             {
                 MessageBox.Show("Erro ao iniciar macro: " + ex.Message);
+                AtualizarStatus($"Error", 0);
             }
         }
 
@@ -375,6 +377,7 @@ namespace windowsFormOI
             catch (Exception ex)
             {
                 MessageBox.Show("Erro ao iniciar macro: " + ex.Message);
+                AtualizarStatus($"Error", 0);
             }
         }
 
@@ -391,6 +394,7 @@ namespace windowsFormOI
             catch (Exception ex)
             {
                 MessageBox.Show("Erro ao iniciar macro: " + ex.Message);
+                AtualizarStatus($"Error", 0);
             }
         }
 
@@ -407,6 +411,7 @@ namespace windowsFormOI
             catch (Exception ex)
             {
                 MessageBox.Show("Erro ao iniciar macro: " + ex.Message);
+                AtualizarStatus($"Error", 0);
             }
         }
 
@@ -423,6 +428,7 @@ namespace windowsFormOI
             catch (Exception ex)
             {
                 MessageBox.Show("Erro ao iniciar macro: " + ex.Message);
+                AtualizarStatus($"Error", 0);
             }
         }
 
@@ -439,6 +445,7 @@ namespace windowsFormOI
             catch (Exception ex)
             {
                 MessageBox.Show("Erro ao iniciar macro: " + ex.Message);
+                AtualizarStatus($"Error", 0);
             }
         }
 
@@ -455,6 +462,7 @@ namespace windowsFormOI
             catch (Exception ex)
             {
                 MessageBox.Show("Erro ao iniciar macro: " + ex.Message);
+                AtualizarStatus($"Error", 0);
             }
         }
 
@@ -475,6 +483,7 @@ namespace windowsFormOI
             catch (Exception ex)
             {
                 MessageBox.Show("Erro ao iniciar macro: " + ex.Message);
+                AtualizarStatus($"Error",0);
             }
         }
 
@@ -497,7 +506,53 @@ namespace windowsFormOI
 
         }
 
-        
+        private void bConsolidado_Click(object sender, EventArgs e)
+        {
+            try 
+            {   
+                AtualizarStatus($"Gerando Consolidado", 20);
+                excelApp.Run("ModelosEscolha");
+                AtualizarStatus($"Finalizando Consolidado", 90);
+                System.Threading.Thread.Sleep(1500);
+                AtualizarStatus($"Consolidado Gerado", 100);
+                System.Threading.Thread.Sleep(1500);
+                AtualizarStatus($"Arquivos Salvos na Pasta {"./out"} Lembre de Conferir Quais Arquivos Foram adicionados à pasta", 0);
+                System.Threading.Thread.Sleep(6000);
+                AtualizarStatus($"Pronto", 0);
+
+            }
+
+            catch
+            {
+                MessageBox.Show("Abra o Excel e Atualize as Informações: ");
+                AtualizarStatus($"Error",0);
+            }
+        }
+
+       
+
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {
+            try { 
+                if(excelApp.Visible == false)
+                {
+                    excelApp.Visible = true;
+                }
+                else
+                {
+                    excelApp.Visible = false;
+                }
+
+                AtualizarStatus($"Visibilidade do Excel Alterada", 0);
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao alterar Visibilidade do Excel" + ex.Message);
+            }
+
+            
+        }
     }
     
     
