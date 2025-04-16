@@ -34,6 +34,7 @@ namespace windowsFormOI
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.boxLayout = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.panel5 = new System.Windows.Forms.Panel();
@@ -79,7 +80,16 @@ namespace windowsFormOI
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.label12 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.label13 = new System.Windows.Forms.Label();
+            this.radioPasta = new System.Windows.Forms.RadioButton();
+            this.radioArquivo = new System.Windows.Forms.RadioButton();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
             this.panel5.SuspendLayout();
@@ -90,6 +100,7 @@ namespace windowsFormOI
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.statusStrip1.SuspendLayout();
+            this.panel6.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -107,6 +118,11 @@ namespace windowsFormOI
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.Color.Transparent;
+            this.tabPage1.Controls.Add(this.panel6);
+            this.tabPage1.Controls.Add(this.button1);
+            this.tabPage1.Controls.Add(this.label13);
+            this.tabPage1.Controls.Add(this.label12);
+            this.tabPage1.Controls.Add(this.boxLayout);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -114,9 +130,16 @@ namespace windowsFormOI
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "PDF";
             // 
+            // boxLayout
+            // 
+            this.boxLayout.FormattingEnabled = true;
+            this.boxLayout.Location = new System.Drawing.Point(504, 152);
+            this.boxLayout.Name = "boxLayout";
+            this.boxLayout.Size = new System.Drawing.Size(121, 21);
+            this.boxLayout.TabIndex = 0;
+            // 
             // tabPage2
             // 
-            this.tabPage2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.tabPage2.Controls.Add(this.pictureBox5);
             this.tabPage2.Controls.Add(this.panel5);
             this.tabPage2.Controls.Add(this.label6);
@@ -593,6 +616,90 @@ namespace windowsFormOI
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(39, 17);
             this.toolStripStatusLabel1.Text = "Status";
             // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label12.Location = new System.Drawing.Point(392, 152);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(91, 20);
+            this.label12.TabIndex = 1;
+            this.label12.Text = "LAYOUTS";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(408, 208);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(128, 32);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "INSERIR TIMBRADO";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(40, 368);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(128, 32);
+            this.button2.TabIndex = 3;
+            this.button2.Text = "GERAR PDF";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
+            // panel6
+            // 
+            this.panel6.BackColor = System.Drawing.Color.IndianRed;
+            this.panel6.Controls.Add(this.checkBox1);
+            this.panel6.Controls.Add(this.radioArquivo);
+            this.panel6.Controls.Add(this.radioPasta);
+            this.panel6.Controls.Add(this.button2);
+            this.panel6.Location = new System.Drawing.Point(24, 24);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(200, 424);
+            this.panel6.TabIndex = 4;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label13.Location = new System.Drawing.Point(264, 32);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(67, 20);
+            this.label13.TabIndex = 4;
+            this.label13.Text = "EXCEL";
+            // 
+            // radioPasta
+            // 
+            this.radioPasta.AutoSize = true;
+            this.radioPasta.Location = new System.Drawing.Point(120, 336);
+            this.radioPasta.Name = "radioPasta";
+            this.radioPasta.Size = new System.Drawing.Size(52, 17);
+            this.radioPasta.TabIndex = 5;
+            this.radioPasta.TabStop = true;
+            this.radioPasta.Text = "Pasta";
+            this.radioPasta.UseVisualStyleBackColor = true;
+            // 
+            // radioArquivo
+            // 
+            this.radioArquivo.AutoSize = true;
+            this.radioArquivo.Location = new System.Drawing.Point(32, 336);
+            this.radioArquivo.Name = "radioArquivo";
+            this.radioArquivo.Size = new System.Drawing.Size(61, 17);
+            this.radioArquivo.TabIndex = 6;
+            this.radioArquivo.TabStop = true;
+            this.radioArquivo.Text = "Arquivo";
+            this.radioArquivo.UseVisualStyleBackColor = true;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(32, 296);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(80, 17);
+            this.checkBox1.TabIndex = 5;
+            this.checkBox1.Text = "checkBox1";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -610,6 +717,8 @@ namespace windowsFormOI
             this.Text = "Versão 0.0.3";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
@@ -624,6 +733,8 @@ namespace windowsFormOI
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.panel6.ResumeLayout(false);
+            this.panel6.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -678,6 +789,15 @@ namespace windowsFormOI
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.PictureBox pictureBox5;
+        private System.Windows.Forms.ComboBox boxLayout;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.RadioButton radioArquivo;
+        private System.Windows.Forms.RadioButton radioPasta;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
 

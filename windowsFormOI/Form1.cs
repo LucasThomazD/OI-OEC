@@ -13,21 +13,26 @@ using Excel = Microsoft.Office.Interop.Excel;
 using System.IO;
 using System.Drawing.Imaging;
 using Microsoft.Office.Interop.Excel;
+using Newtonsoft.Json;
+
 
 namespace windowsFormOI
-{   
+{
+
+    
 
     public partial class Form1 : Form
     {
         private Excel.Application excelApp;
         private Excel.Workbook workbook;
         private string caminhoImprimir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "out", "imprimir");
-
+        private Dictionary<string, Layout> layouts;
 
         public Form1()
         {
             InitializeComponent();
             this.DoubleBuffered = true; // Evita flickering (tremulação)
+            LayoutComboBox();
         }
         protected override void OnPaintBackground(PaintEventArgs e)
         {
@@ -116,19 +121,58 @@ namespace windowsFormOI
             BoxModelo.Items.Add("Resumo Fis.");
             BoxModelo.SelectedIndex = 0;
 
+            
 
 
 
         }
-        private void button9_Click(object sender, EventArgs e)
+        private void LoadLayouts()
         {
-            string opcaoSelecionada = "A";
-
-            if (!string.IsNullOrEmpty(opcaoSelecionada))
+            try
             {
-                EnviarParaExcel(opcaoSelecionada);
+                // Supondo que o arquivo "layouts.json" esteja na pasta de execução
+                string jsonFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "include","layouts_papel.json");
+                string jsonText = File.ReadAllText(jsonFile);
+                layouts = JsonConvert.DeserializeObject<Dictionary<string, Layout>>(jsonText);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao carregar o arquivo JSON: " + ex.Message);
             }
         }
+        private void LayoutComboBox()
+        {
+            // Suponha que você tenha uma ComboBox chamada comboBoxLayouts no formulário
+            boxLayout.Items.Clear();
+            if (layouts != null)
+            {
+                foreach (string key in layouts.Keys)
+                {
+                    boxLayout.Items.Add(key);
+                }
+            }
+        }
+
+        private void comboBoxLayouts_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (boxLayout.SelectedItem != null)
+            {
+                string selectedLayout = boxLayout.SelectedItem.ToString();
+                Layout layoutData = layouts[selectedLayout];
+
+                // Exemplo: obtém o valor de "papel" do layout selecionado
+                int papelValue = layoutData.papel;
+                MessageBox.Show($"Layout selecionado: {selectedLayout}\nValor de 'papel': {papelValue}");
+
+                // Aqui você pode enviar o valor para uma variável Python.
+                // Veja a seguir duas abordagens:
+                //
+                // 1. Utilizando IronPython para executar um script Python embutido
+                // 2. Chamando um script Python externo e passando argumentos via linha de comando
+            }
+        }
+
+
         private void AtualizarStatus(string mensagem, int progresso = -1)
         {
             // Atualiza o texto da StatusLabel
@@ -194,7 +238,7 @@ namespace windowsFormOI
                     AtualizarStatus($"Informações Atualizadas", 100);
                     System.Threading.Thread.Sleep(2000);
                     AtualizarStatus($"Pronto Para Buscar Arquivos Comparativos", 0);
-                    MessageBox.Show("Por favor, selecione opções válidas em ambos os campos.");
+                    MessageBox.Show("Informações Atualizadas");
                     return;
                 }
    
@@ -207,30 +251,7 @@ namespace windowsFormOI
                 AtualizarStatus($"Error", 0);
             }
         }
-        private void ComboBoxEscolha(System.Windows.Forms.ComboBox BoxModelo, System.Windows.Forms.TextBox textInicio, System.Windows.Forms.TextBox textFim, System.Windows.Forms.ComboBox BoxTA1)
-        {
-
-            
-            try
-            {
-                var worksheet = (Excel.Worksheet)workbook.Sheets[1];
-                if (textFim.Text != null || textInicio.Text != null)
-                    {
-                    worksheet.Cells[2, 2] = textInicio.Text.ToString(); // Célula B2
-                    worksheet.Cells[2, 3] = textFim.Text.ToString(); // Célula C2
-                }
-                worksheet.Cells[2, 1] = BoxModelo.SelectedItem.ToString(); // Célula A2
-                worksheet.Cells[1, 1] = BoxTA1.SelectedItem.ToString(); // Célula A1
-                System.Threading.Thread.Sleep(2000);
-                
-            }
-
-            catch(Exception ex) 
-            {
-                MessageBox.Show("Erro ao alterar valores no Excel: " + ex.Message);
-                AtualizarStatus($"Error", 0);
-            }
-        }
+      
         private void AbrirMacros()
         {
             try
@@ -553,11 +574,21 @@ namespace windowsFormOI
 
             
         }
-
-      
     }
-    
-    
+    public class Layout
+    {
+        public string fundo { get; set; }
+        public string repetido { get; set; }
+        public List<int> tamanho { get; set; }  // O JSON usará uma lista, já que tuplas não existem no JSON
+        public int topMarg { get; set; }
+        public int botMarg { get; set; }
+        public int leftMarg { get; set; }
+        public int rightMarg { get; set; }
+        public int papel { get; set; }
+        public int orientacao { get; set; }
+    }
+
+
 }
    
 
