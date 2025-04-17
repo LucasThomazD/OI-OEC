@@ -34,7 +34,19 @@ namespace windowsFormOI
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.boxLayout = new System.Windows.Forms.ComboBox();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.boxModeloPDF = new System.Windows.Forms.ComboBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.comboTim = new System.Windows.Forms.ComboBox();
+            this.checkTimbrado = new System.Windows.Forms.CheckBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.comboBranco = new System.Windows.Forms.ComboBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.checkBranco = new System.Windows.Forms.CheckBox();
+            this.radioArquivo = new System.Windows.Forms.RadioButton();
+            this.radioPasta = new System.Windows.Forms.RadioButton();
+            this.button2 = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.panel5 = new System.Windows.Forms.Panel();
@@ -80,16 +92,9 @@ namespace windowsFormOI
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.label12 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.panel6 = new System.Windows.Forms.Panel();
-            this.label13 = new System.Windows.Forms.Label();
-            this.radioPasta = new System.Windows.Forms.RadioButton();
-            this.radioArquivo = new System.Windows.Forms.RadioButton();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.panel6.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
             this.panel5.SuspendLayout();
@@ -100,7 +105,6 @@ namespace windowsFormOI
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.statusStrip1.SuspendLayout();
-            this.panel6.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -119,10 +123,6 @@ namespace windowsFormOI
             // 
             this.tabPage1.BackColor = System.Drawing.Color.Transparent;
             this.tabPage1.Controls.Add(this.panel6);
-            this.tabPage1.Controls.Add(this.button1);
-            this.tabPage1.Controls.Add(this.label13);
-            this.tabPage1.Controls.Add(this.label12);
-            this.tabPage1.Controls.Add(this.boxLayout);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -130,13 +130,145 @@ namespace windowsFormOI
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "PDF";
             // 
-            // boxLayout
+            // panel6
             // 
-            this.boxLayout.FormattingEnabled = true;
-            this.boxLayout.Location = new System.Drawing.Point(504, 152);
-            this.boxLayout.Name = "boxLayout";
-            this.boxLayout.Size = new System.Drawing.Size(121, 21);
-            this.boxLayout.TabIndex = 0;
+            this.panel6.BackColor = System.Drawing.Color.IndianRed;
+            this.panel6.Controls.Add(this.boxModeloPDF);
+            this.panel6.Controls.Add(this.label13);
+            this.panel6.Controls.Add(this.label16);
+            this.panel6.Controls.Add(this.comboTim);
+            this.panel6.Controls.Add(this.checkTimbrado);
+            this.panel6.Controls.Add(this.label15);
+            this.panel6.Controls.Add(this.comboBranco);
+            this.panel6.Controls.Add(this.label14);
+            this.panel6.Controls.Add(this.checkBranco);
+            this.panel6.Controls.Add(this.radioArquivo);
+            this.panel6.Controls.Add(this.radioPasta);
+            this.panel6.Controls.Add(this.button2);
+            this.panel6.Location = new System.Drawing.Point(24, 24);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(200, 424);
+            this.panel6.TabIndex = 4;
+            // 
+            // boxModeloPDF
+            // 
+            this.boxModeloPDF.FormattingEnabled = true;
+            this.boxModeloPDF.Location = new System.Drawing.Point(40, 168);
+            this.boxModeloPDF.Name = "boxModeloPDF";
+            this.boxModeloPDF.Size = new System.Drawing.Size(113, 21);
+            this.boxModeloPDF.TabIndex = 12;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label13.Location = new System.Drawing.Point(18, 32);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(162, 24);
+            this.label13.TabIndex = 4;
+            this.label13.Text = "PDF TIMBRADO";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label16.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label16.Location = new System.Drawing.Point(40, 144);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(70, 16);
+            this.label16.TabIndex = 11;
+            this.label16.Text = "MODELO";
+            // 
+            // comboTim
+            // 
+            this.comboTim.FormattingEnabled = true;
+            this.comboTim.Location = new System.Drawing.Point(40, 232);
+            this.comboTim.Name = "comboTim";
+            this.comboTim.Size = new System.Drawing.Size(113, 21);
+            this.comboTim.TabIndex = 10;
+            // 
+            // checkTimbrado
+            // 
+            this.checkTimbrado.AutoSize = true;
+            this.checkTimbrado.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkTimbrado.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkTimbrado.Location = new System.Drawing.Point(152, 209);
+            this.checkTimbrado.Name = "checkTimbrado";
+            this.checkTimbrado.Size = new System.Drawing.Size(15, 14);
+            this.checkTimbrado.TabIndex = 6;
+            this.checkTimbrado.UseVisualStyleBackColor = true;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label15.Location = new System.Drawing.Point(40, 208);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(86, 16);
+            this.label15.TabIndex = 9;
+            this.label15.Text = "TIMBRADO";
+            // 
+            // comboBranco
+            // 
+            this.comboBranco.FormattingEnabled = true;
+            this.comboBranco.Location = new System.Drawing.Point(40, 296);
+            this.comboBranco.Name = "comboBranco";
+            this.comboBranco.Size = new System.Drawing.Size(113, 21);
+            this.comboBranco.TabIndex = 7;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label14.Location = new System.Drawing.Point(40, 272);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(96, 16);
+            this.label14.TabIndex = 7;
+            this.label14.Text = "EM BRANCO";
+            // 
+            // checkBranco
+            // 
+            this.checkBranco.AutoSize = true;
+            this.checkBranco.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBranco.Location = new System.Drawing.Point(152, 273);
+            this.checkBranco.Name = "checkBranco";
+            this.checkBranco.Size = new System.Drawing.Size(15, 14);
+            this.checkBranco.TabIndex = 5;
+            this.checkBranco.UseVisualStyleBackColor = true;
+            // 
+            // radioArquivo
+            // 
+            this.radioArquivo.AutoSize = true;
+            this.radioArquivo.Location = new System.Drawing.Point(32, 336);
+            this.radioArquivo.Name = "radioArquivo";
+            this.radioArquivo.Size = new System.Drawing.Size(74, 17);
+            this.radioArquivo.TabIndex = 6;
+            this.radioArquivo.TabStop = true;
+            this.radioArquivo.Text = "ARQUIVO";
+            this.radioArquivo.UseVisualStyleBackColor = true;
+            // 
+            // radioPasta
+            // 
+            this.radioPasta.AutoSize = true;
+            this.radioPasta.Location = new System.Drawing.Point(120, 336);
+            this.radioPasta.Name = "radioPasta";
+            this.radioPasta.Size = new System.Drawing.Size(60, 17);
+            this.radioPasta.TabIndex = 5;
+            this.radioPasta.TabStop = true;
+            this.radioPasta.Text = "PASTA";
+            this.radioPasta.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(40, 368);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(128, 32);
+            this.button2.TabIndex = 3;
+            this.button2.Text = "GERAR PDF";
+            this.button2.UseVisualStyleBackColor = true;
             // 
             // tabPage2
             // 
@@ -564,7 +696,7 @@ namespace windowsFormOI
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(48, 16);
+            this.pictureBox1.Location = new System.Drawing.Point(40, 16);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(168, 88);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -616,90 +748,6 @@ namespace windowsFormOI
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(39, 17);
             this.toolStripStatusLabel1.Text = "Status";
             // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label12.Location = new System.Drawing.Point(392, 152);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(91, 20);
-            this.label12.TabIndex = 1;
-            this.label12.Text = "LAYOUTS";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(408, 208);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(128, 32);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "INSERIR TIMBRADO";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(40, 368);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(128, 32);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "GERAR PDF";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // panel6
-            // 
-            this.panel6.BackColor = System.Drawing.Color.IndianRed;
-            this.panel6.Controls.Add(this.checkBox1);
-            this.panel6.Controls.Add(this.radioArquivo);
-            this.panel6.Controls.Add(this.radioPasta);
-            this.panel6.Controls.Add(this.button2);
-            this.panel6.Location = new System.Drawing.Point(24, 24);
-            this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(200, 424);
-            this.panel6.TabIndex = 4;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label13.Location = new System.Drawing.Point(264, 32);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(67, 20);
-            this.label13.TabIndex = 4;
-            this.label13.Text = "EXCEL";
-            // 
-            // radioPasta
-            // 
-            this.radioPasta.AutoSize = true;
-            this.radioPasta.Location = new System.Drawing.Point(120, 336);
-            this.radioPasta.Name = "radioPasta";
-            this.radioPasta.Size = new System.Drawing.Size(52, 17);
-            this.radioPasta.TabIndex = 5;
-            this.radioPasta.TabStop = true;
-            this.radioPasta.Text = "Pasta";
-            this.radioPasta.UseVisualStyleBackColor = true;
-            // 
-            // radioArquivo
-            // 
-            this.radioArquivo.AutoSize = true;
-            this.radioArquivo.Location = new System.Drawing.Point(32, 336);
-            this.radioArquivo.Name = "radioArquivo";
-            this.radioArquivo.Size = new System.Drawing.Size(61, 17);
-            this.radioArquivo.TabIndex = 6;
-            this.radioArquivo.TabStop = true;
-            this.radioArquivo.Text = "Arquivo";
-            this.radioArquivo.UseVisualStyleBackColor = true;
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(32, 296);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(80, 17);
-            this.checkBox1.TabIndex = 5;
-            this.checkBox1.Text = "checkBox1";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -714,11 +762,12 @@ namespace windowsFormOI
             this.MaximumSize = new System.Drawing.Size(1200, 740);
             this.MinimumSize = new System.Drawing.Size(1200, 740);
             this.Name = "Form1";
-            this.Text = "Versão 0.0.3";
+            this.Text = "Versão 0.1.0";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
+            this.panel6.ResumeLayout(false);
+            this.panel6.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
@@ -733,8 +782,6 @@ namespace windowsFormOI
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
-            this.panel6.ResumeLayout(false);
-            this.panel6.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -789,15 +836,19 @@ namespace windowsFormOI
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.PictureBox pictureBox5;
-        private System.Windows.Forms.ComboBox boxLayout;
-        private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.RadioButton radioArquivo;
         private System.Windows.Forms.RadioButton radioPasta;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox checkBranco;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.ComboBox comboTim;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.ComboBox comboBranco;
+        private System.Windows.Forms.CheckBox checkTimbrado;
+        private System.Windows.Forms.ComboBox boxModeloPDF;
+        private System.Windows.Forms.Label label16;
     }
 }
 

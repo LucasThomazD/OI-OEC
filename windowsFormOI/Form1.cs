@@ -32,7 +32,17 @@ namespace windowsFormOI
         {
             InitializeComponent();
             this.DoubleBuffered = true; // Evita flickering (tremulação)
+            LoadLayouts();
             LayoutComboBox();
+            checkTimbrado.Enabled = false;
+            checkBranco.Enabled = false;
+            comboBranco.Enabled = false;
+            comboTim.Enabled = false;
+
+            boxModeloPDF.SelectedIndexChanged += boxModeloPDF_SelectedIndexChanged;
+            checkTimbrado.CheckedChanged += checkTimbrado_CheckedChanged;
+            checkBranco.CheckedChanged += checkBranco_CheckedChanged;
+
         }
         protected override void OnPaintBackground(PaintEventArgs e)
         {
@@ -121,8 +131,9 @@ namespace windowsFormOI
             BoxModelo.Items.Add("Resumo Fis.");
             BoxModelo.SelectedIndex = 0;
 
-            
 
+            boxModeloPDF.Items.Add("Personalizar");
+            boxModeloPDF.SelectedIndex = 0;
 
 
         }
@@ -143,34 +154,76 @@ namespace windowsFormOI
         private void LayoutComboBox()
         {
             // Suponha que você tenha uma ComboBox chamada comboBoxLayouts no formulário
-            boxLayout.Items.Clear();
+            boxModeloPDF.Items.Clear();
             if (layouts != null)
             {
                 foreach (string key in layouts.Keys)
                 {
-                    boxLayout.Items.Add(key);
+                    boxModeloPDF.Items.Add(key);
                 }
             }
         }
-
-        private void comboBoxLayouts_SelectedIndexChanged(object sender, EventArgs e)
+        private void boxModeloPDF_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (boxLayout.SelectedItem != null)
+            // Verifica se a opção "Personalizar" está selecionada
+            if (boxModeloPDF.SelectedItem != null && boxModeloPDF.SelectedItem.ToString() == "Personalizar")
             {
-                string selectedLayout = boxLayout.SelectedItem.ToString();
-                Layout layoutData = layouts[selectedLayout];
-
-                // Exemplo: obtém o valor de "papel" do layout selecionado
-                int papelValue = layoutData.papel;
-                MessageBox.Show($"Layout selecionado: {selectedLayout}\nValor de 'papel': {papelValue}");
-
-                // Aqui você pode enviar o valor para uma variável Python.
-                // Veja a seguir duas abordagens:
-                //
-                // 1. Utilizando IronPython para executar um script Python embutido
-                // 2. Chamando um script Python externo e passando argumentos via linha de comando
+                // Habilita os CheckedListBox
+                checkTimbrado.Enabled = true;
+                checkBranco.Enabled = true;
             }
+            else
+            {
+                // Desabilita os CheckedListBox
+                checkTimbrado.Enabled = false;
+                checkBranco.Enabled = false;
+
+                // Opcional: Limpa as seleções
+                checkTimbrado.Checked = false;
+                checkBranco.Checked = false;
+            }
+
+            if (boxModeloPDF.SelectedItem != null)
+            {
+                string selectedLayout = boxModeloPDF.SelectedItem.ToString();
+
+                if (layouts.ContainsKey(selectedLayout))
+                {
+                    Layout layoutData = layouts[selectedLayout];
+
+                    // Exemplo: obtém o valor de "papel" do layout selecionado
+                    int papelValue = layoutData.papel;
+                    
+
+                    // Aqui você pode enviar o valor para uma variável Python.
+                    // Veja a seguir duas abordagens:
+                    //
+                    // 1. Utilizando IronPython para executar um script Python embutido
+                    // 2. Chamando um script Python externo e passando argumentos via linha de comando
+                }
+                else
+                {
+                    MessageBox.Show("O layout selecionado não foi encontrado.");
+                }
+            }
+
+
         }
+
+        private void checkTimbrado_CheckedChanged(object sender, EventArgs e)
+        {
+            // Habilita ou desabilita a ComboBox com base no estado do CheckBox
+            comboTim.Enabled = checkTimbrado.Checked;
+        }
+
+        private void checkBranco_CheckedChanged(object sender, EventArgs e)
+        {
+            // Habilita ou desabilita a ComboBox com base no estado do CheckBox
+            comboBranco.Enabled = checkBranco.Checked;
+        }
+
+
+
 
 
         private void AtualizarStatus(string mensagem, int progresso = -1)
