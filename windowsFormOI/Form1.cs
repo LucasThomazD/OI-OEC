@@ -14,6 +14,10 @@ using System.IO;
 using System.Drawing.Imaging;
 using Microsoft.Office.Interop.Excel;
 using Newtonsoft.Json;
+using System.Net.Sockets;
+using System.Diagnostics;
+using System.Drawing.Text;
+
 
 
 namespace windowsFormOI
@@ -38,6 +42,7 @@ namespace windowsFormOI
             checkBranco.Enabled = false;
             comboBranco.Enabled = false;
             comboTim.Enabled = false;
+            
 
             boxModeloPDF.SelectedIndexChanged += boxModeloPDF_SelectedIndexChanged;
             checkTimbrado.CheckedChanged += checkTimbrado_CheckedChanged;
@@ -52,11 +57,13 @@ namespace windowsFormOI
                 Color.GhostWhite,
                 Color.DeepSkyBlue,
                 LinearGradientMode.Vertical))
+                
             {
                 e.Graphics.FillRectangle(brush, this.ClientRectangle);
             }
         }
-
+        Process pythonProcess;
+        string perso = "Personalizar";
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -137,6 +144,40 @@ namespace windowsFormOI
 
 
         }
+        private void LerNamedPipe()
+        {
+            string pipeName = @"\\.\pipe\python_pipe";
+
+            // Verifica a existência da Pipe
+            if (!File.Exists(pipeName))
+            {
+                MessageBox.Show("Named Pipe não está disponível.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Lê mensagens da Pipe
+            using (FileStream pipeStream = new FileStream(pipeName, FileMode.Open, FileAccess.Read))
+            using (StreamReader reader = new StreamReader(pipeStream))
+            {
+                while (!reader.EndOfStream)
+                {
+                    string mensagem = reader.ReadLine();
+
+                    // Atualiza a ToolStripStatusLabel na thread de UI
+                    if (statusStrip1.InvokeRequired)
+                    {
+                        statusStrip1.Invoke(new System.Action(() =>
+                        {
+                            toolStripStatusLabel1.Text = mensagem;
+                        }));
+                    }
+                    else
+                    {
+                        toolStripStatusLabel1.Text = mensagem;
+                    }
+                }
+            }
+        }
         private void LoadLayouts()
         {
             try
@@ -183,29 +224,7 @@ namespace windowsFormOI
                 checkBranco.Checked = false;
             }
 
-            if (boxModeloPDF.SelectedItem != null)
-            {
-                string selectedLayout = boxModeloPDF.SelectedItem.ToString();
-
-                if (layouts.ContainsKey(selectedLayout))
-                {
-                    Layout layoutData = layouts[selectedLayout];
-
-                    // Exemplo: obtém o valor de "papel" do layout selecionado
-                    int papelValue = layoutData.papel;
-                    
-
-                    // Aqui você pode enviar o valor para uma variável Python.
-                    // Veja a seguir duas abordagens:
-                    //
-                    // 1. Utilizando IronPython para executar um script Python embutido
-                    // 2. Chamando um script Python externo e passando argumentos via linha de comando
-                }
-                else
-                {
-                    MessageBox.Show("O layout selecionado não foi encontrado.");
-                }
-            }
+            
 
 
         }
@@ -213,11 +232,23 @@ namespace windowsFormOI
         private void checkTimbrado_CheckedChanged(object sender, EventArgs e)
         {
             // Habilita ou desabilita a ComboBox com base no estado do CheckBox
+            if (checkTimbrado.Checked)
+            {
+                checkBranco.Checked = false; // Desmarca a outra CheckBox
+            }
+
+            // Habilita ou desabilita a ComboBox com base no estado do CheckBox
             comboTim.Enabled = checkTimbrado.Checked;
         }
 
         private void checkBranco_CheckedChanged(object sender, EventArgs e)
         {
+            // Habilita ou desabilita a ComboBox com base no estado do CheckBox
+            if (checkBranco.Checked)
+            {
+                checkTimbrado.Checked = false; // Desmarca a outra CheckBox
+            }
+
             // Habilita ou desabilita a ComboBox com base no estado do CheckBox
             comboBranco.Enabled = checkBranco.Checked;
         }
@@ -603,12 +634,13 @@ namespace windowsFormOI
             }
         }
 
-       
+
 
         private void pictureBox3_Click(object sender, EventArgs e)
         {
-            try { 
-                if(excelApp.Visible == false)
+            try
+            {
+                if (excelApp.Visible == false)
                 {
                     excelApp.Visible = true;
                 }
@@ -625,7 +657,236 @@ namespace windowsFormOI
                 MessageBox.Show("Erro ao alterar Visibilidade do Excel" + ex.Message);
             }
 
+        }
+
+
+
+
+
+        /// ----------------------- Aba PDF --------------------------------
+        
+        
+        
+        private string SelecionarArquivoOuPastaExcel()
+        {
+            string resultado = null; // Variável para armazenar o resultado
+
+            if (radioArquivo.Checked) // Quando o RadioButton para arquivo é selecionado
+            {
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "Arquivos Excel (*.xls*)|*.xls*"; // Filtro de arquivos
+                openFileDialog.Title = "Selecione um arquivo";
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    resultado = openFileDialog.FileName; // Armazena o caminho do arquivo
+                }
+            }
+            else if (radioPasta.Checked) // Quando o RadioButton para pasta é selecionado
+            {
+                FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+                folderBrowserDialog.Description = "Selecione uma pasta";
+
+                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                {
+                    resultado = folderBrowserDialog.SelectedPath; // Armazena o caminho da pasta
+                }
+            }
+
+            return resultado; // Retorna o valor selecionado
+        }
+        private string SelecionarArquivoOuPastaPDF()
+        {
+            string resultado = null; // Variável para armazenar o resultado
+
+            if (radioArquivo.Checked) // Quando o RadioButton para arquivo é selecionado
+            {
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "Arquivos de texto (*.pdf)|*.pdf"; // Filtro de arquivos
+                openFileDialog.Title = "Selecione um arquivo";
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    resultado = openFileDialog.FileName; // Armazena o caminho do arquivo
+                }
+            }
+            else if (radioPasta.Checked) // Quando o RadioButton para pasta é selecionado
+            {
+                FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+                folderBrowserDialog.Description = "Selecione uma pasta";
+                
+
+                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                {
+                    resultado = folderBrowserDialog.SelectedPath; // Armazena o caminho da pasta
+                }
+            }
+
+            return resultado; // Retorna o valor selecionado
+        }
+
+
+
+        private void iniciarPythonExcel(System.Windows.Forms.ComboBox boxModeloPDF)
+
+        {
+            string selecionado = SelecionarArquivoOuPastaExcel();
+
+            if (selecionado != null)
+            {
+                string par1 = boxModeloPDF.SelectedItem.ToString();
+                string imprimirpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "out", "Imprimir");
+
+                string scriptpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "include", "Excel_to_PDF.py");
+
+
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "pyPDF", "Scripts", "python.exe"); // Certifique-se de que o Python está no PATH
+                startInfo.Arguments = $"\"{scriptpath}\" \"{par1}\" \"{imprimirpath}\" \"{selecionado}\""; // Substitua pelo caminho do seu script Python
+                startInfo.WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                startInfo.UseShellExecute = false;
+                startInfo.RedirectStandardOutput = true;
+                startInfo.CreateNoWindow = true;
+
+                pythonProcess = Process.Start(startInfo);
+
+            }
+            else
+            {
+                AtualizarStatus("Erro Ao Selecionar Pasta ou Arquivo!", 0);
+            }
+        }
+        private void iniciarPython(System.Windows.Forms.ComboBox boxModeloPDF)
+
+        {
+            string selecionado = SelecionarArquivoOuPastaPDF();
+
+            if (selecionado != null)
+            {
+                string par1 = boxModeloPDF.SelectedItem.ToString();
+                string imprimirpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "out", "Imprimir");
+
+                string scriptpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "include", "InserirModelo.py");
+
+
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "pyPDF", "Scripts", "python.exe"); // Certifique-se de que o Python está no PATH
+                startInfo.Arguments = $"\"{scriptpath}\" \"{par1}\" \"{imprimirpath}\" \"{selecionado}\""; // Substitua pelo caminho do seu script Python
+                startInfo.WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                startInfo.UseShellExecute = false;
+                startInfo.RedirectStandardOutput = true;
+                startInfo.CreateNoWindow = true;
+
+                pythonProcess = Process.Start(startInfo);
+            }
+            else
+            {
+                AtualizarStatus("Erro Ao Selecionar Pasta ou Arquivo!", 0);
+            }
+        }
+
+
+        private void pythonPerso(System.Windows.Forms.ComboBox boxModeloPDF)
+        {
+            string selecionado = SelecionarArquivoOuPastaExcel();
+
+            if (selecionado != null)
+            {
+                string par1 = boxModeloPDF.SelectedItem.ToString();
+                bool par2 = checkTimbrado.Checked;
+                bool par3 = checkBranco.Checked;
+                string imprimirpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "out", "Imprimir");
+                string scriptpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "include", "InserirModelo.py");
+
+
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "pyPDF", "Scripts", "python.exe"); // Certifique-se de que o Python está no PATH
+                startInfo.Arguments = $"\"{scriptpath}\" \"{par1}\" \"{imprimirpath}\" \"{selecionado}\" \"{par2}\" \"{par3}\""; // Substitua pelo caminho do seu script Python
+                startInfo.WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                startInfo.UseShellExecute = false;
+                startInfo.RedirectStandardOutput = true;
+                startInfo.CreateNoWindow = true;
+
+                pythonProcess = Process.Start(startInfo);
+
+            }
+            else
+            {
+                AtualizarStatus("Erro Ao Selecionar Pasta ou Arquivo!", 0);
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
             
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+            
+            try
+            {
+                if (radioArquivo.Checked || radioPasta.Checked)
+                {   
+                    if (boxModeloPDF.SelectedItem.ToString() == perso) {
+                        
+                        pythonPerso(boxModeloPDF);
+                    }
+                    else if(boxModeloPDF.SelectedItem.ToString() != perso)
+                    {
+                        
+                        iniciarPython(boxModeloPDF);
+                        
+
+                    }
+                }
+                else
+                {
+                    AtualizarStatus("Lembre-se de selecionar umas das opções: Pasta ou Arquivo");
+                }
+            }
+
+
+            catch
+            {
+
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            
+            
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (radioArquivo.Checked || radioPasta.Checked)
+                {
+                    if (boxModeloPDF.SelectedItem.ToString() != perso)
+                    {
+                        AtualizarStatus("Iniciando Processo");
+                        iniciarPythonExcel(boxModeloPDF);
+                    }
+                    else
+                    {
+                        AtualizarStatus("Modelo Incompativel Com Essa Tarefa");
+                    }
+                }
+                else
+                {
+                    AtualizarStatus("Lembre-se de selecionar umas das opções: Pasta ou Arquivo");
+                }
+            }
+
+
+            catch 
+            {
+            
+            }
         }
     }
     public class Layout
@@ -640,6 +901,7 @@ namespace windowsFormOI
         public int papel { get; set; }
         public int orientacao { get; set; }
     }
+
 
 
 }

@@ -86,12 +86,15 @@ namespace windowsFormOI
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.label7 = new System.Windows.Forms.Label();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.button4 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel6.SuspendLayout();
@@ -102,6 +105,7 @@ namespace windowsFormOI
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.panel1.SuspendLayout();
+            this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.statusStrip1.SuspendLayout();
@@ -133,6 +137,7 @@ namespace windowsFormOI
             // panel6
             // 
             this.panel6.BackColor = System.Drawing.Color.IndianRed;
+            this.panel6.Controls.Add(this.button4);
             this.panel6.Controls.Add(this.boxModeloPDF);
             this.panel6.Controls.Add(this.label13);
             this.panel6.Controls.Add(this.label16);
@@ -145,15 +150,16 @@ namespace windowsFormOI
             this.panel6.Controls.Add(this.radioArquivo);
             this.panel6.Controls.Add(this.radioPasta);
             this.panel6.Controls.Add(this.button2);
-            this.panel6.Location = new System.Drawing.Point(24, 24);
+            this.panel6.Location = new System.Drawing.Point(24, 56);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(200, 424);
+            this.panel6.Size = new System.Drawing.Size(200, 392);
             this.panel6.TabIndex = 4;
             // 
             // boxModeloPDF
             // 
+            this.boxModeloPDF.Cursor = System.Windows.Forms.Cursors.Hand;
             this.boxModeloPDF.FormattingEnabled = true;
-            this.boxModeloPDF.Location = new System.Drawing.Point(40, 168);
+            this.boxModeloPDF.Location = new System.Drawing.Point(40, 104);
             this.boxModeloPDF.Name = "boxModeloPDF";
             this.boxModeloPDF.Size = new System.Drawing.Size(113, 21);
             this.boxModeloPDF.TabIndex = 12;
@@ -161,20 +167,20 @@ namespace windowsFormOI
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label13.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label13.Location = new System.Drawing.Point(18, 32);
+            this.label13.Location = new System.Drawing.Point(8, 24);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(162, 24);
+            this.label13.Size = new System.Drawing.Size(182, 20);
             this.label13.TabIndex = 4;
-            this.label13.Text = "PDF TIMBRADO";
+            this.label13.Text = "EXCEL E TIMBRADO";
             // 
             // label16
             // 
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label16.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label16.Location = new System.Drawing.Point(40, 144);
+            this.label16.Location = new System.Drawing.Point(40, 80);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(70, 16);
             this.label16.TabIndex = 11;
@@ -182,8 +188,9 @@ namespace windowsFormOI
             // 
             // comboTim
             // 
+            this.comboTim.Cursor = System.Windows.Forms.Cursors.Hand;
             this.comboTim.FormattingEnabled = true;
-            this.comboTim.Location = new System.Drawing.Point(40, 232);
+            this.comboTim.Location = new System.Drawing.Point(40, 168);
             this.comboTim.Name = "comboTim";
             this.comboTim.Size = new System.Drawing.Size(113, 21);
             this.comboTim.TabIndex = 10;
@@ -192,8 +199,9 @@ namespace windowsFormOI
             // 
             this.checkTimbrado.AutoSize = true;
             this.checkTimbrado.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkTimbrado.Cursor = System.Windows.Forms.Cursors.Hand;
             this.checkTimbrado.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkTimbrado.Location = new System.Drawing.Point(152, 209);
+            this.checkTimbrado.Location = new System.Drawing.Point(152, 145);
             this.checkTimbrado.Name = "checkTimbrado";
             this.checkTimbrado.Size = new System.Drawing.Size(15, 14);
             this.checkTimbrado.TabIndex = 6;
@@ -204,7 +212,7 @@ namespace windowsFormOI
             this.label15.AutoSize = true;
             this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label15.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label15.Location = new System.Drawing.Point(40, 208);
+            this.label15.Location = new System.Drawing.Point(40, 144);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(86, 16);
             this.label15.TabIndex = 9;
@@ -212,8 +220,9 @@ namespace windowsFormOI
             // 
             // comboBranco
             // 
+            this.comboBranco.Cursor = System.Windows.Forms.Cursors.Hand;
             this.comboBranco.FormattingEnabled = true;
-            this.comboBranco.Location = new System.Drawing.Point(40, 296);
+            this.comboBranco.Location = new System.Drawing.Point(40, 232);
             this.comboBranco.Name = "comboBranco";
             this.comboBranco.Size = new System.Drawing.Size(113, 21);
             this.comboBranco.TabIndex = 7;
@@ -223,7 +232,7 @@ namespace windowsFormOI
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label14.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label14.Location = new System.Drawing.Point(40, 272);
+            this.label14.Location = new System.Drawing.Point(40, 208);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(96, 16);
             this.label14.TabIndex = 7;
@@ -233,7 +242,8 @@ namespace windowsFormOI
             // 
             this.checkBranco.AutoSize = true;
             this.checkBranco.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBranco.Location = new System.Drawing.Point(152, 273);
+            this.checkBranco.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.checkBranco.Location = new System.Drawing.Point(152, 209);
             this.checkBranco.Name = "checkBranco";
             this.checkBranco.Size = new System.Drawing.Size(15, 14);
             this.checkBranco.TabIndex = 5;
@@ -242,7 +252,8 @@ namespace windowsFormOI
             // radioArquivo
             // 
             this.radioArquivo.AutoSize = true;
-            this.radioArquivo.Location = new System.Drawing.Point(32, 336);
+            this.radioArquivo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.radioArquivo.Location = new System.Drawing.Point(32, 272);
             this.radioArquivo.Name = "radioArquivo";
             this.radioArquivo.Size = new System.Drawing.Size(74, 17);
             this.radioArquivo.TabIndex = 6;
@@ -253,7 +264,8 @@ namespace windowsFormOI
             // radioPasta
             // 
             this.radioPasta.AutoSize = true;
-            this.radioPasta.Location = new System.Drawing.Point(120, 336);
+            this.radioPasta.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.radioPasta.Location = new System.Drawing.Point(120, 272);
             this.radioPasta.Name = "radioPasta";
             this.radioPasta.Size = new System.Drawing.Size(60, 17);
             this.radioPasta.TabIndex = 5;
@@ -263,12 +275,14 @@ namespace windowsFormOI
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(40, 368);
+            this.button2.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button2.Location = new System.Drawing.Point(40, 304);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(128, 32);
             this.button2.TabIndex = 3;
             this.button2.Text = "GERAR PDF";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // tabPage2
             // 
@@ -683,6 +697,8 @@ namespace windowsFormOI
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.button3);
+            this.tabPage4.Controls.Add(this.button1);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
@@ -690,6 +706,26 @@ namespace windowsFormOI
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Ferramentas";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(544, 112);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 1;
+            this.button3.Text = "button3";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(416, 112);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // pictureBox1
             // 
@@ -748,6 +784,17 @@ namespace windowsFormOI
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(39, 17);
             this.toolStripStatusLabel1.Text = "Status";
             // 
+            // button4
+            // 
+            this.button4.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button4.Location = new System.Drawing.Point(40, 344);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(128, 32);
+            this.button4.TabIndex = 13;
+            this.button4.Text = "MESCLAR";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -778,6 +825,7 @@ namespace windowsFormOI
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.tabPage4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.statusStrip1.ResumeLayout(false);
@@ -849,6 +897,9 @@ namespace windowsFormOI
         private System.Windows.Forms.CheckBox checkTimbrado;
         private System.Windows.Forms.ComboBox boxModeloPDF;
         private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button4;
     }
 }
 
