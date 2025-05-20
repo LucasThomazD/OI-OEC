@@ -17,13 +17,15 @@ using Newtonsoft.Json;
 using System.Net.Sockets;
 using System.Diagnostics;
 using System.Drawing.Text;
+using System.Threading;
+using PdfiumViewer;
 
 
 
 namespace windowsFormOI
 {
 
-    
+
 
     public partial class Form1 : Form
     {
@@ -31,7 +33,9 @@ namespace windowsFormOI
         private Excel.Workbook workbook;
         private string caminhoImprimir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "out", "imprimir");
         private Dictionary<string, Layout> layouts;
-
+        private string ultimoStatus = "";
+        private string caminhoArquivo = "include/log.txt"; // Caminho do arquiv
+        private PdfViewer pdfViewer = new PdfViewer();
         public Form1()
         {
             InitializeComponent();
@@ -42,31 +46,97 @@ namespace windowsFormOI
             checkBranco.Enabled = false;
             comboBranco.Enabled = false;
             comboTim.Enabled = false;
-            
+
+            timer1 = new System.Windows.Forms.Timer();
+            timer1.Interval = 1000;
+            timer1.Tick += Timer1_Tick;
 
             boxModeloPDF.SelectedIndexChanged += boxModeloPDF_SelectedIndexChanged;
             checkTimbrado.CheckedChanged += checkTimbrado_CheckedChanged;
             checkBranco.CheckedChanged += checkBranco_CheckedChanged;
-
+            //SetRoundedBorder(15, button1, button2, button3, button4, botUnificar, bArquivo, bAplicarInfo, bUnico, bElet, bCBINC, bMentos, bInst, bTub, bSupTub, bMulti, bConsolidado);
+            SetRoundedBorder(10, panel1, panel5, panel4, panel6, panel7, panel8);
         }
-        protected override void OnPaintBackground(PaintEventArgs e)
+
+        private void Timer1_Tick(object sender, EventArgs e)
         {
 
-            using (LinearGradientBrush brush = new LinearGradientBrush(
-                this.ClientRectangle,
-                Color.GhostWhite,
-                Color.DeepSkyBlue,
-                LinearGradientMode.Vertical))
-                
+            try
             {
-                e.Graphics.FillRectangle(brush, this.ClientRectangle);
+
+                if (File.Exists(caminhoArquivo))
+                {
+
+                    string novoStatus = File.ReadAllText(caminhoArquivo);
+
+                    if (novoStatus == "Tarefa Concluida")
+                    {
+
+                        timer1.Stop();
+
+                    }
+                    if (novoStatus != ultimoStatus)
+                    {
+                        AtualizarStatus(novoStatus);
+                        ultimoStatus = novoStatus;
+
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                AtualizarStatus($"Erro ao ler o arquivo de log: {ex.Message}");
             }
         }
+
+        private void botoespdf(System.Windows.Forms.Button button2, System.Windows.Forms.Button button4, System.Windows.Forms.Button botUnificar)
+        {
+            if (button2.Enabled == true || button4.Enabled == true || botUnificar.Enabled == true)
+            {
+                button2.Enabled = false;
+                button4.Enabled = false;
+                botUnificar.Enabled = false;
+            }
+            else
+            {
+                button2.Enabled = true;
+                button4.Enabled = true;
+                botUnificar.Enabled = true;
+            }
+        }
+        private void SetRoundedBorder(int radius, params Control[] controls)
+        {
+            foreach (Control control in controls)
+            {
+                control.Paint += (sender, e) =>
+                {
+                    Graphics g = e.Graphics;
+                    g.SmoothingMode = SmoothingMode.AntiAlias; // Ativa antialiasing
+                    this.DoubleBuffered = true;
+                    GraphicsPath path = new GraphicsPath();
+                    path.AddArc(0, 0, radius, radius, 180, 90);
+                    path.AddArc(control.Width - radius, 0, radius, radius, 270, 90);
+                    path.AddArc(control.Width - radius, control.Height - radius, radius, radius, 0, 90);
+                    path.AddArc(0, control.Height - radius, radius, radius, 90, 90);
+                    path.CloseFigure();
+
+                    control.Region = new Region(path);
+                };
+
+                control.Invalidate(); // Força a atualização do controle
+            }
+        }
+
+
+
         Process pythonProcess;
         string perso = "Personalizar";
 
         private void Form1_Load(object sender, EventArgs e)
         {
+
             BoxTA1.Items.Add("Selecione");
             BoxTA1.Items.Add("TA 24");
             BoxTA1.Items.Add("TA 25");
@@ -138,10 +208,35 @@ namespace windowsFormOI
             BoxModelo.Items.Add("Resumo Fis.");
             BoxModelo.SelectedIndex = 0;
 
+            comboBranco.Items.Add("A3 Paisagem");
+            comboBranco.Items.Add("A4 Retrato");
+            comboBranco.Items.Add("A4 Paisagem");
+
+
+
+
 
             boxModeloPDF.Items.Add("Personalizar");
             boxModeloPDF.SelectedIndex = 0;
 
+            //Configurar ToolTip
+            this.toolTip1.AutoPopDelay = 5000;
+            this.toolTip1.InitialDelay = 1000;
+            this.toolTip1.ReshowDelay = 500;
+            this.toolTip1.SetToolTip(LBCataMilho, "Ferramenta de transferência de arquivos de um diretório pra outro");
+            this.toolTip1.SetToolTip(labelRaiz, "Pasta Alvo");
+            this.toolTip1.SetToolTip(labelDestino, "Destino dos arquivos transferidos da pasta alvo");
+            this.toolTip1.SetToolTip(Bt_Organizar, "Organiza os arquivos na pasta out gerando-as no formato do TA");
+            this.toolTip1.SetToolTip(PB_BT_Stop_1, "Interrompe o processo do cata milho (Fuga de emergência)");
+            this.toolTip1.SetToolTip(PB_gerenciador_1, "Abre no gerenciador de arquivos a pasta de saida dos arquivos Excel");
+            this.toolTip1.SetToolTip(bAplicarInfo, "Iniciar o arquivo Excel e atualiza as informações de cabeçalho ");
+            this.toolTip1.SetToolTip(bDerrubar, "Fecha o Excel");
+            this.toolTip1.SetToolTip(bUnico, "Busca Apenas um arquivo, quando não há o mesmo no TA anterior");
+            this.toolTip1.SetToolTip(PB_buscar_1, "Inicia o diálogo de diretorio permitindo a busca manual do caminho com os arquivos");
+            this.toolTip1.SetToolTip(PathBox, "Cole aqui o caminho da pasta com os arquivos a serem unificados");
+            this.toolTip1.SetToolTip(button2, "Gera arquivos PDF a partir de uma planilha excel, usando as margens continadas nos modelos");
+            this.toolTip1.SetToolTip(button4, "Aplica mesclagens no PDF, adicionando timbrado e página em branco");
+            this.toolTip1.SetToolTip(button1, "Inicia um PopUp Contendo a ferramenta de Conversão de números");
 
         }
         private void LerNamedPipe()
@@ -183,7 +278,7 @@ namespace windowsFormOI
             try
             {
                 // Supondo que o arquivo "layouts.json" esteja na pasta de execução
-                string jsonFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "include","layouts_papel.json");
+                string jsonFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "include", "layouts_papel.json");
                 string jsonText = File.ReadAllText(jsonFile);
                 layouts = JsonConvert.DeserializeObject<Dictionary<string, Layout>>(jsonText);
             }
@@ -196,11 +291,14 @@ namespace windowsFormOI
         {
             // Suponha que você tenha uma ComboBox chamada comboBoxLayouts no formulário
             boxModeloPDF.Items.Clear();
+            comboTim.Items.Clear();
+
             if (layouts != null)
             {
                 foreach (string key in layouts.Keys)
                 {
                     boxModeloPDF.Items.Add(key);
+                    comboTim.Items.Add(key);
                 }
             }
         }
@@ -224,7 +322,7 @@ namespace windowsFormOI
                 checkBranco.Checked = false;
             }
 
-            
+
 
 
         }
@@ -235,6 +333,7 @@ namespace windowsFormOI
             if (checkTimbrado.Checked)
             {
                 checkBranco.Checked = false; // Desmarca a outra CheckBox
+
             }
 
             // Habilita ou desabilita a ComboBox com base no estado do CheckBox
@@ -252,8 +351,6 @@ namespace windowsFormOI
             // Habilita ou desabilita a ComboBox com base no estado do CheckBox
             comboBranco.Enabled = checkBranco.Checked;
         }
-
-
 
 
 
@@ -310,7 +407,7 @@ namespace windowsFormOI
                 if (BoxTA1.SelectedIndex > 0 || BoxTA2.SelectedIndex > 0 || BoxArea.SelectedIndex > 0 || BoxArea.SelectedIndex > 0 || textFim.Text != null || textInicio.Text != null)
                 {
                     AtualizarStatus($"Atualizando Informações", 75);
-                    
+
 
                     // Define os valores em células específicas
                     worksheet.Cells[1, 1] = BoxTA1.SelectedItem.ToString(); // Célula A1
@@ -325,7 +422,7 @@ namespace windowsFormOI
                     MessageBox.Show("Informações Atualizadas");
                     return;
                 }
-   
+
                 //string caminhoArquivo = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "src", "macros.xlsm");
 
             }
@@ -335,7 +432,7 @@ namespace windowsFormOI
                 AtualizarStatus($"Error", 0);
             }
         }
-      
+
         private void AbrirMacros()
         {
             try
@@ -355,9 +452,9 @@ namespace windowsFormOI
                     excelApp.Visible = false;
                 }
 
-                
 
-               
+
+
             }
             catch (Exception ex)
             {
@@ -390,7 +487,7 @@ namespace windowsFormOI
                 }
                 // Libera os objetos COM
                 //System.Runtime.InteropServices.Marshal.ReleaseComObject(worksheet);
-                
+
 
                 MessageBox.Show("Excel fechado com sucesso!");
             }
@@ -410,7 +507,7 @@ namespace windowsFormOI
                 AtualizarStatus($"Caminho Encontrado", 80);
                 System.Threading.Thread.Sleep(2000);
                 AtualizarStatus($"Gerenciador Aberto em {caminho}", 0);
-                
+
 
 
             }
@@ -422,7 +519,7 @@ namespace windowsFormOI
         }
         private void bArquivo_Click(object sender, EventArgs e)
         {
-            
+
             try
             {
                 AtualizarStatus($"Buscando Arquivos de Comparação", 30);
@@ -588,7 +685,7 @@ namespace windowsFormOI
             catch (Exception ex)
             {
                 MessageBox.Show("Erro ao iniciar macro: " + ex.Message);
-                AtualizarStatus($"Error",0);
+                AtualizarStatus($"Error", 0);
             }
         }
 
@@ -604,7 +701,7 @@ namespace windowsFormOI
             FecharExcel();
         }
 
-       
+
 
         private void panel3_Paint(object sender, PaintEventArgs e)
         {
@@ -613,8 +710,8 @@ namespace windowsFormOI
 
         private void bConsolidado_Click(object sender, EventArgs e)
         {
-            try 
-            {   
+            try
+            {
                 AtualizarStatus($"Gerando Consolidado", 20);
                 excelApp.Run("ModelosEscolha");
                 AtualizarStatus($"Finalizando Consolidado", 90);
@@ -630,7 +727,7 @@ namespace windowsFormOI
             catch
             {
                 MessageBox.Show("Abra o Excel e Atualize as Informações: ");
-                AtualizarStatus($"Error",0);
+                AtualizarStatus($"Error", 0);
             }
         }
 
@@ -664,9 +761,9 @@ namespace windowsFormOI
 
 
         /// ----------------------- Aba PDF --------------------------------
-        
-        
-        
+
+
+
         private string SelecionarArquivoOuPastaExcel()
         {
             string resultado = null; // Variável para armazenar o resultado
@@ -697,6 +794,7 @@ namespace windowsFormOI
         }
         private string SelecionarArquivoOuPastaPDF()
         {
+
             string resultado = null; // Variável para armazenar o resultado
 
             if (radioArquivo.Checked) // Quando o RadioButton para arquivo é selecionado
@@ -714,7 +812,7 @@ namespace windowsFormOI
             {
                 FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
                 folderBrowserDialog.Description = "Selecione uma pasta";
-                
+
 
                 if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -730,6 +828,7 @@ namespace windowsFormOI
         private void iniciarPythonExcel(System.Windows.Forms.ComboBox boxModeloPDF)
 
         {
+            timer1.Start();
             string selecionado = SelecionarArquivoOuPastaExcel();
 
             if (selecionado != null)
@@ -741,7 +840,7 @@ namespace windowsFormOI
 
 
                 ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "pyPDF", "Scripts", "python.exe"); // Certifique-se de que o Python está no PATH
+                startInfo.FileName = "python.exe"; // Certifique-se de que o Python está no PATH
                 startInfo.Arguments = $"\"{scriptpath}\" \"{par1}\" \"{imprimirpath}\" \"{selecionado}\""; // Substitua pelo caminho do seu script Python
                 startInfo.WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory;
                 startInfo.UseShellExecute = false;
@@ -759,6 +858,7 @@ namespace windowsFormOI
         private void iniciarPython(System.Windows.Forms.ComboBox boxModeloPDF)
 
         {
+            timer1.Start();
             string selecionado = SelecionarArquivoOuPastaPDF();
 
             if (selecionado != null)
@@ -770,7 +870,7 @@ namespace windowsFormOI
 
 
                 ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "pyPDF", "Scripts", "python.exe"); // Certifique-se de que o Python está no PATH
+                startInfo.FileName = "python.exe"; // Certifique-se de que o Python está no PATH
                 startInfo.Arguments = $"\"{scriptpath}\" \"{par1}\" \"{imprimirpath}\" \"{selecionado}\""; // Substitua pelo caminho do seu script Python
                 startInfo.WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory;
                 startInfo.UseShellExecute = false;
@@ -784,66 +884,109 @@ namespace windowsFormOI
                 AtualizarStatus("Erro Ao Selecionar Pasta ou Arquivo!", 0);
             }
         }
-
-
-        private void pythonPerso(System.Windows.Forms.ComboBox boxModeloPDF)
+        private void unificar(System.Windows.Forms.TextBox PathBox)
         {
-            string selecionado = SelecionarArquivoOuPastaExcel();
+            timer1.Start();
+            string caminho = PathBox.Text;
+            string scriptpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "include", "MesclarPDF.py");
+            AtualizarStatus("", 0);
+
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = "python.exe"; // Certifique-se de que o Python está no PATH
+            startInfo.Arguments = $"\"{scriptpath}\" \"{caminho}\""; // Substitua pelo caminho do seu script Python
+            startInfo.WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            startInfo.UseShellExecute = false;
+            startInfo.RedirectStandardOutput = true;
+            startInfo.CreateNoWindow = true;
+
+            pythonProcess = Process.Start(startInfo);
+        }
+
+
+        private void pythonPerso(System.Windows.Forms.ComboBox comboTim, System.Windows.Forms.ComboBox comboBranco)
+        {
+            timer1.Start();
+            string selecionado = SelecionarArquivoOuPastaPDF();
 
             if (selecionado != null)
             {
-                string par1 = boxModeloPDF.SelectedItem.ToString();
-                bool par2 = checkTimbrado.Checked;
-                bool par3 = checkBranco.Checked;
+
+
                 string imprimirpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "out", "Imprimir");
-                string scriptpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "include", "InserirModelo.py");
+                string scriptpath1 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "include", "timbrado.py");
+                string scriptpath2 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "include", "PaginaRepetida.py");
 
+                if (checkTimbrado.Checked == true && comboTim.SelectedItem.ToString() != null) {
+                    string par1 = comboTim.SelectedItem.ToString();
+                    ProcessStartInfo startInfo = new ProcessStartInfo();
+                    startInfo.FileName = "python.exe"; // Certifique-se de que o Python está no PATH
+                    startInfo.Arguments = $"\"{scriptpath1}\" \"{par1}\" \"{imprimirpath}\" \"{selecionado}\""; // Substitua pelo caminho do seu script Python
+                    startInfo.WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                    startInfo.UseShellExecute = false;
+                    startInfo.RedirectStandardOutput = true;
+                    startInfo.CreateNoWindow = true;
+                    pythonProcess = Process.Start(startInfo);
 
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "pyPDF", "Scripts", "python.exe"); // Certifique-se de que o Python está no PATH
-                startInfo.Arguments = $"\"{scriptpath}\" \"{par1}\" \"{imprimirpath}\" \"{selecionado}\" \"{par2}\" \"{par3}\""; // Substitua pelo caminho do seu script Python
-                startInfo.WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                startInfo.UseShellExecute = false;
-                startInfo.RedirectStandardOutput = true;
-                startInfo.CreateNoWindow = true;
+                }
+                else if (checkBranco.Checked == true && comboBranco.Text != null)
+                {
+                    string par2 = comboBranco.SelectedItem.ToString();
+                    ProcessStartInfo startInfo = new ProcessStartInfo();
+                    startInfo.FileName = "python.exe"; // Certifique-se de que o Python está no PATH
+                    startInfo.Arguments = $"\"{scriptpath2}\" \"{par2}\" \"{imprimirpath}\" \"{selecionado}\""; // Substitua pelo caminho do seu script Python
+                    startInfo.WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                    startInfo.UseShellExecute = false;
+                    startInfo.RedirectStandardOutput = true;
+                    startInfo.CreateNoWindow = true;
+                    pythonProcess = Process.Start(startInfo);
+                }
 
-                pythonProcess = Process.Start(startInfo);
+                else
+                {
+                    AtualizarStatus("Lembre-se de Escolher um Item Na ComboBox", 0);
+                    timer1.Stop();
+                }
+
 
             }
             else
             {
                 AtualizarStatus("Erro Ao Selecionar Pasta ou Arquivo!", 0);
+
+                timer1.Stop();
             }
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            
+            AtualizarStatus("Nada Atribuido a Este Botão Ainda!");
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
 
-            
+
             try
             {
+
                 if (radioArquivo.Checked || radioPasta.Checked)
-                {   
+                {
                     if (boxModeloPDF.SelectedItem.ToString() == perso) {
-                        
-                        pythonPerso(boxModeloPDF);
+
+                        pythonPerso(comboTim, comboBranco);
                     }
-                    else if(boxModeloPDF.SelectedItem.ToString() != perso)
+                    else if (boxModeloPDF.SelectedItem.ToString() != perso)
                     {
-                        
+
                         iniciarPython(boxModeloPDF);
-                        
+
 
                     }
                 }
                 else
                 {
                     AtualizarStatus("Lembre-se de selecionar umas das opções: Pasta ou Arquivo");
+
                 }
             }
 
@@ -856,14 +999,24 @@ namespace windowsFormOI
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
-            
+            string appPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "txtConvert.exe");
+
+            if (File.Exists(appPath))
+            {
+                Process.Start(appPath); // Inicia sua aplicação
+            }
+            else
+            {
+                MessageBox.Show("Arquivo não encontrado!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             try
             {
+
                 if (radioArquivo.Checked || radioPasta.Checked)
                 {
                     if (boxModeloPDF.SelectedItem.ToString() != perso)
@@ -871,6 +1024,8 @@ namespace windowsFormOI
                         AtualizarStatus("Iniciando Processo");
                         iniciarPythonExcel(boxModeloPDF);
                     }
+
+
                     else
                     {
                         AtualizarStatus("Modelo Incompativel Com Essa Tarefa");
@@ -879,14 +1034,107 @@ namespace windowsFormOI
                 else
                 {
                     AtualizarStatus("Lembre-se de selecionar umas das opções: Pasta ou Arquivo");
+
                 }
             }
 
 
-            catch 
+            catch
             {
-            
+
             }
+        }
+
+
+        private void pictureBox6_Click(object sender, EventArgs e)
+        {
+            string resultado = null;
+            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+            folderBrowserDialog.Description = "Selecione uma pasta";
+
+
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
+                resultado = folderBrowserDialog.SelectedPath; // Armazena o caminho da pasta
+                PathBox.Text = resultado;
+            }
+            else
+            {
+                AtualizarStatus("Erro Ao Selecionar Pasta!");
+
+            }
+        }
+
+        private void botUnificar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+                if (!string.IsNullOrWhiteSpace(PathBox.Text))
+                {
+
+                    unificar(PathBox);
+
+                }
+
+                else
+                {
+                    AtualizarStatus("Por Favor Inserir o Caminho e Tente Novamente!");
+
+                }
+            }
+            catch (Exception ex) {
+                AtualizarStatus($"Erro {ex.Message}");
+            }
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+            AtualizarStatus("Timer1_Tick foi chamado");
+        }
+        
+
+        
+        
+        public void Form2() // Construtor padrão
+        {
+            InitializeComponent();
+        }
+
+        private void visualizarPDF_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Form2 novoForm = new Form2();
+                novoForm.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao abrir Form2: {ex.Message}");
+            }
+           
+        }
+        private void caminhoPDFs_Click(object sender, EventArgs e)
+         {
+            string caminho = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "out", "imprimir");
+            AbrirGerenciadorArquivos(caminho);
+        }
+        private void gerarPDFHelp_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Teste concluido");
+        }
+        private void mesclarHelp_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Teste concluido");
+        }
+        private void excelTimHelp_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Teste concluido");
+        }
+
+        private void tabPage4_Click(object sender, EventArgs e)
+        {
+
         }
     }
     public class Layout
