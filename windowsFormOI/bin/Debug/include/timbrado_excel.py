@@ -1,35 +1,30 @@
-import win32com.client
-import os
-import sys
-import json
-import time
-from manipular import *
-sys.path.append(os.path.join(os.path.dirname(__file__), "../libs"))
+import os,time,win32com.client,sys,json
+from manipular import GerenciadorArquivo
 
+sys.path.append(os.path.join(os.path.dirname(__file__), "../libs"))
 
 with open("include/layouts_papel.json", "r", encoding="utf-8") as arquivo:
     layouts = json.load(arquivo)
-
+    
 def obter_nome_saida(caminho_arquivo):
     """Retorna o nome do arquivo original (sem extensão) na pasta ./out/Excel_PDF."""
     nome_base = os.path.splitext(os.path.basename(caminho_arquivo))[0]
-    return os.path.join(os.getcwd(), "out", "Excel_PDF", f"{nome_base}.pdf")    
-
+    return os.path.join(os.getcwd(), "out", "Imprimir", f"{nome_base}.pdf") 
+    
 def gerarPDF(arquivo_excel, config):
     # Obter o caminho de saída do PDF a partir do arquivo Excel
     arquivo_pdf = obter_nome_saida(arquivo_excel)
-    
-    
+        
+        
     # Inicializar o Excel
     excel = win32com.client.Dispatch("Excel.Application")
     excel.Visible = False  # Manter em segundo plano
-    
+        
     # Abrir o arquivo Excel
     wb = excel.Workbooks.Open(arquivo_excel)
-    
+        
     # Selecionar a primeira planilha
     ws = wb.Worksheets(1)
-    
     # Configurar a página (margens, orientação, tamanho do papel) usando os valores em config
     ws.PageSetup.TopMargin = config["topMarg"]
     ws.PageSetup.BottomMargin = config["botMarg"]
@@ -52,13 +47,13 @@ def gerarPDF(arquivo_excel, config):
     wb.Close(False)
     excel.Quit()
     # Envia mensagem para a Named Pipe ao concluir o processamento
-    
-    
+        
+        
     return arquivo_pdf
 
-# Parâmetros passados via linha de comando
-# sys.argv[1] -> layout escolhido  
-# sys.argv[3] -> caminho do arquivo Excel OU diretório contendo arquivos Excel
+# def timbrado():
+    
+
 layout_escolhido = sys.argv[1]
 entrada = sys.argv[3]
 config = layouts[layout_escolhido]

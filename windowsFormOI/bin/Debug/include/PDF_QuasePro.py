@@ -75,8 +75,6 @@ class alterar_pag:
                 arquivotxt.limpar_arquivo()
                 
             else:
-                arquivotxt.atualizar_arquivo("Página Inválida")
-                time.sleep(3)
                 arquivotxt.atualizar_arquivo("Atualizando PDF")
                 time.sleep(3)
                 arquivotxt.atualizar_arquivo("Tarefa Concluida")

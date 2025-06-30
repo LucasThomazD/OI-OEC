@@ -75,8 +75,6 @@ class alterar_pag:
                 arquivotxt.limpar_arquivo()
                 
             else:
-                arquivotxt.atualizar_arquivo("Página Inválida")
-                time.sleep(3)
                 arquivotxt.atualizar_arquivo("Atualizando PDF")
                 time.sleep(3)
                 arquivotxt.atualizar_arquivo("Tarefa Concluida")
@@ -104,10 +102,17 @@ class alterar_pag:
                 
                 escritor_pdf.add_page(pagina)
 
-            saida = os.path.join(pdf_entrada)
+            saida = os.path.join(pdf_saida)
             # Salvando o PDF rotacionado
             with open(saida, "wb") as arquivo_saida:
                 escritor_pdf.write(arquivo_saida)
+            arquivotxt.atualizar_arquivo("Página Inválida")
+            time.sleep(3)
+            arquivotxt.atualizar_arquivo("Atualizando PDF")
+            time.sleep(3)
+            arquivotxt.atualizar_arquivo("Tarefa Concluida")
+            time.sleep(2.5)
+            arquivotxt.limpar_arquivo()
 
                 
 
